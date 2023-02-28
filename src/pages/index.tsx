@@ -1,16 +1,21 @@
 import Head from "next/head";
 import Image from "next/image";
 import type { NextPage } from "next";
-import { myMachine } from "@/machines/myFirstMachine";
+import { todosMachine } from "@/machines/todoAppMachine";
 import { useMachine } from "@xstate/react";
 
 const Home: NextPage = () => {
-  const [state, send] = useMachine(myMachine);
+  const [state, send] = useMachine(todosMachine, {
+    services: {
+      loadTodos: async () => {
+        return ["Do laundry", "Do dishes", "Do homework"];
+      },
+    },
+  });
   return (
     <div>
-      {JSON.stringify(state.value)}
-      <button onClick={() => send("MOUSEOVER")}>MOUSEOVER</button>
-      <button onClick={() => send("MOUSEOUT")}>MOUSEOUT</button>
+      <pre>{JSON.stringify(state.value)}</pre>
+      <pre>{JSON.stringify(state.context)}</pre>
     </div>
   );
 };
