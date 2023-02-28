@@ -1,12 +1,18 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "next/font/google";
 import type { NextPage } from "next";
-
-const inter = Inter({ subsets: ["latin"] });
+import { myMachine } from "@/machines/myFirstMachine";
+import { useMachine } from "@xstate/react";
 
 const Home: NextPage = () => {
-  return <div>HELLO WORLD</div>;
+  const [state, send] = useMachine(myMachine);
+  return (
+    <div>
+      {JSON.stringify(state.value)}
+      <button onClick={() => send("MOUSEOVER")}>MOUSEOVER</button>
+      <button onClick={() => send("MOUSEOUT")}>MOUSEOUT</button>
+    </div>
+  );
 };
 
 export default Home;
